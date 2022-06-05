@@ -22,13 +22,13 @@ public struct ClusterMap<Content>: View where Content: View {
         annotationContent: @escaping (Items.Element) -> Annotation
     )
     where
-        Content == _CustomAnnotatedMapContent<Annotation>,
+        Content == _ClusteredMapContent<Annotation>,
         Items: RandomAccessCollection,
-        Annotation: MapClusterAnnotationProtocol,
+        Annotation: ClusterMapAnnotationProtocol,
         Items.Element: Identifiable
     {
         let annotations = annotationItems.map(annotationContent)
-        self.content = _CustomAnnotatedMapContent<Annotation>.init(
+        self.content = _ClusteredMapContent<Annotation>.init(
             mapRect: mapRect,
             annotations: annotations,
             interactionModes: interactionModes,

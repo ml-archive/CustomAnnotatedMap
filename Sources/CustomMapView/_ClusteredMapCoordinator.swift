@@ -1,16 +1,16 @@
 import Foundation
 import MapKit
 
-extension _CustomAnnotatedMapContent {
-    public class _CustomAnnotatedMapCoordinator:
+extension _ClusteredMapContent {
+    public class _ClusteredMapCoordinator:
         NSObject,
         MKMapViewDelegate,
         CLLocationManagerDelegate
     {
         var locationManager = CLLocationManager()
-        private var mapContent: _CustomAnnotatedMapContent
+        private var mapContent: _ClusteredMapContent
 
-        init(_ control: _CustomAnnotatedMapContent<Annotation>) {
+        init(_ control: _ClusteredMapContent<Annotation>) {
             self.mapContent = control
             super.init()
             self.locationManager.delegate = self
@@ -26,7 +26,7 @@ extension _CustomAnnotatedMapContent {
         {
             var annotationView: MKAnnotationView?
 
-            if let annotation = annotation as? CustomAnnotation {
+            if let annotation = annotation as? _BaseMKAnnotation {
                 annotationView = setupDefaultAnnotationView(
                     for: annotation,
                     on: mapView
@@ -53,12 +53,12 @@ extension _CustomAnnotatedMapContent {
 }
 
 // MARK: Setup Annotation View
-extension _CustomAnnotatedMapContent._CustomAnnotatedMapCoordinator {
+extension _ClusteredMapContent._ClusteredMapCoordinator {
     fileprivate func setupDefaultAnnotationView(
-        for annotation: CustomAnnotation,
+        for annotation: _BaseMKAnnotation,
         on mapView: MKMapView
     ) -> MKAnnotationView {
-        let identifier = NSStringFromClass(CustomAnnotation.self)
+        let identifier = NSStringFromClass(_BaseMKAnnotation.self)
         let view = mapView.dequeueReusableAnnotationView(
             withIdentifier: identifier,
             for: annotation

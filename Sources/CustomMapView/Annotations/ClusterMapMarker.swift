@@ -1,11 +1,9 @@
 import CoreLocation
 import SwiftUI
 
-public protocol MapClusterAnnotationProtocol {
-}
-
-public struct MapClusterMarker: MapClusterAnnotationProtocol {
-    var annotation: CustomAnnotation
+/// A balloon-shaped annotation that marks a map location.
+public struct ClusterMapMarker: ClusterMapAnnotationProtocol {
+    var annotation: _BaseMKAnnotation
 
     public init(
         coordinate: CLLocationCoordinate2D,
@@ -13,13 +11,13 @@ public struct MapClusterMarker: MapClusterAnnotationProtocol {
         tint: Color?
     ) {
         if let tint = tint {
-            self.annotation = CustomAnnotation(
+            self.annotation = .init(
                 coordinate: coordinate,
                 clusteringIdentifier: clusteringIdentifier,
                 tint: UIColor(tint)
             )
         } else {
-            self.annotation = CustomAnnotation(
+            self.annotation = .init(
                 coordinate: coordinate,
                 clusteringIdentifier: clusteringIdentifier
             )

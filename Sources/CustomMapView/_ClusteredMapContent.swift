@@ -1,7 +1,7 @@
 import MapKit
 import SwiftUI
 
-public struct _CustomAnnotatedMapContent<Annotation>: UIViewRepresentable {
+public struct _ClusteredMapContent<Annotation>: UIViewRepresentable {
     private var annotations: [Annotation]
     @Binding var coordinateRegion: CoordinateRegion
     private let interactionModes: MapInteractionModes
@@ -19,8 +19,8 @@ public struct _CustomAnnotatedMapContent<Annotation>: UIViewRepresentable {
         self.showsUserLocation = showsUserLocation
     }
 
-    public func makeCoordinator() -> _CustomAnnotatedMapCoordinator {
-        _CustomAnnotatedMapCoordinator(self)
+    public func makeCoordinator() -> _ClusteredMapCoordinator {
+        _ClusteredMapCoordinator(self)
     }
 
     public func makeUIView(context: Context) -> some MKMapView {
@@ -28,14 +28,14 @@ public struct _CustomAnnotatedMapContent<Annotation>: UIViewRepresentable {
 
         let mkAnnotations =
             annotations
-            .compactMap { $0 as? MapClusterMarker }
+            .compactMap { $0 as? ClusterMapMarker }
             .map(\.annotation)
 
         mapView.addAnnotations(mkAnnotations)
 
         mapView.register(
             MKMarkerAnnotationView.self,
-            forAnnotationViewWithReuseIdentifier: NSStringFromClass(CustomAnnotation.self)
+            forAnnotationViewWithReuseIdentifier: NSStringFromClass(_BaseMKAnnotation.self)
         )
         return mapView
     }

@@ -109,7 +109,7 @@ struct AnnotationsView: View {
                 mapRect: $viewModel.mapRect,
                 annotationItems: viewModel.locations,
                 annotationContent: {
-                    MapClusterMarker(
+                    ClusterMapMarker(
                         coordinate: $0.location,
                         clusteringIdentifier: "something",
                         tint: .green

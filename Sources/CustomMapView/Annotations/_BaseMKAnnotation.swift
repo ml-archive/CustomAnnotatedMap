@@ -1,7 +1,7 @@
 import MapKit
 import SwiftUI
 
-class CustomAnnotation: NSObject, MKAnnotation {
+class _BaseMKAnnotation: NSObject, MKAnnotation {
 
     // This property must be key-value observable, which the `@objc dynamic` attributes provide.
     @objc dynamic var coordinate: CLLocationCoordinate2D
