@@ -60,13 +60,20 @@ public struct CustomMapView: UIViewRepresentable {
     ///   their location.
     /// - userTrackingMode: How the map should respond to user location updates
     /// - annotationItems: The collection of data backing the annotation views
-    public init<Items>(
+    /// - annotationContent: A closure producing the annotation content
+    public init<Items, Annotation>(
         mapRect: Binding<MapRect>,
         interactionModes: MapInteractionModes = .all,
         showsUserLocation: Bool = false,
         userTrackingMode: Binding<MapUserTrackingMode>? = nil,
-        annotationItems: Items
-    ) where Items: RandomAccessCollection, Items.Element: Identifiable {
+        annotationItems: Items,
+        annotationContent: @escaping (Items.Element) -> Annotation
+    )
+    where /* Content == _DefaultAnnotatedMapContent<Items>, */
+        Items: RandomAccessCollection,
+        Annotation: MapAnnotationProtocol,
+        Items.Element: Identifiable
+    {
         self.init(
             mapRect: mapRect,
             interactionModes: interactionModes,
@@ -74,6 +81,16 @@ public struct CustomMapView: UIViewRepresentable {
             userTrackingMode: userTrackingMode
         )
 
+        //TODO: create annotations
+
+        // let n = annotationItems.map { item in
+        //     return annotationContent(item)
+        // }
+        let n = annotationItems.map(annotationContent)  // [Annotation]
+        let j = n.map { $0 as! MapMarker }
+
+        let z = MapMarker(coordinate: .init(), tint: .purple)
+        // let z2 = MKMarkerAnnotationView
     }
 
     public func makeCoordinator() -> Coordinator {

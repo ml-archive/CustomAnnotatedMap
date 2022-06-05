@@ -24,7 +24,7 @@ struct ContentView: View {
                 }
 
                 //TODO: InteractionModesView
-                
+
                 NavigationLink("Annotations") {
                     AnnotationsView()
                 }

@@ -25,7 +25,7 @@ private class ViewModel: ObservableObject {
                 longitude: -122.009_020
             )
         ),
-        size: .init(width: 4000, height: 4000)
+        size: .init(width: 100_000_000, height: 100_000_000)
     )
     // FIXME: coordinate values
     // {
@@ -59,6 +59,26 @@ private class ViewModel: ObservableObject {
             long: 2.3508
         ),
         IdentifiablePlace(
+            name: "Paris",
+            lat: 48.8568,
+            long: 2.3519
+        ),
+        IdentifiablePlace(
+            name: "Paris",
+            lat: 48.8579,
+            long: 2.3620
+        ),
+        IdentifiablePlace(
+            name: "Paris",
+            lat: 48.8580,
+            long: 2.3731
+        ),
+        IdentifiablePlace(
+            name: "Paris",
+            lat: 48.8591,
+            long: 2.3942
+        ),
+        IdentifiablePlace(
             name: "Rome",
             lat: 41.9,
             long: 12.5
@@ -76,14 +96,34 @@ struct AnnotationsView: View {
 
     var body: some View {
         VStack {
+
             Map(
                 mapRect: $viewModel.mkMapRect,
-                annotationItems: viewModel.locations
-            ) {
-                MapPin(coordinate: $0.location)
-            }
+                annotationItems: viewModel.locations,
+                annotationContent: {
+                    MapMarker(coordinate: $0.location, tint: .purple)
+                }
+            )
 
-            CustomMapView(mapRect: $viewModel.mapRect)
+            ClusterMap(
+                mapRect: $viewModel.mapRect,
+                annotationItems: viewModel.locations,
+                annotationContent: {
+                    MapClusterMarker(
+                        coordinate: $0.location,
+                        clusteringIdentifier: "something",
+                        tint: .green
+                    )
+                }
+            )
+
+            //FIXME: check correct binding
+            Text(
+                """
+                \($viewModel.mapRect.wrappedValue.origin.x) - \($viewModel.mapRect.wrappedValue.origin.y)
+                """
+            )
+
         }
         .navigationTitle("User Location")
         .navigationBarTitleDisplayMode(.inline)
