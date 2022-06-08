@@ -11,22 +11,11 @@ struct ContentView: View {
     var body: some View {
         NavigationView {
             List {
-                NavigationLink("Region") {
-                    RegionView()
-                }
-
-                NavigationLink("MapRect") {
-                    MapRectView()
-                }
-
-                NavigationLink("UserLocation") {
-                    UserLocationView()
-                }
-
-                //TODO: InteractionModesView
-
                 NavigationLink("Annotations") {
                     AnnotationsView()
+                }
+                NavigationLink("Clustered Annotations") {
+                    ClusteredAnnotationsView()
                 }
             }
             .navigationTitle("Basic Map Features")

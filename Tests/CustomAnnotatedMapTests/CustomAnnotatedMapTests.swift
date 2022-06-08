@@ -1,8 +1,8 @@
 import XCTest
 
-@testable import CustomMapView
+@testable import CustomAnnotatedMap
 
-final class CustomMapViewTests: XCTestCase {
+final class CustomAnnotatedMapTests: XCTestCase {
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct

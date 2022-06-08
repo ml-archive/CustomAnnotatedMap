@@ -1,18 +1,18 @@
 import MapKit
 import SwiftUI
 
-class _BaseMKAnnotation: NSObject, MKAnnotation {
+public class _BaseMKAnnotation: NSObject, MKAnnotation {
 
     // This property must be key-value observable, which the `@objc dynamic` attributes provide.
-    @objc dynamic var coordinate: CLLocationCoordinate2D
+    @objc dynamic public var coordinate: CLLocationCoordinate2D
 
-    private(set) var clusteringIdentifier: String
-    private(set) var tint: UIColor?
+    let clusteringIdentifier: String?
+    let tint: Color?
 
     init(
         coordinate: CLLocationCoordinate2D,
-        clusteringIdentifier: String,
-        tint: UIColor? = nil
+        clusteringIdentifier: String?,
+        tint: Color?
     ) {
         self.coordinate = coordinate
         self.clusteringIdentifier = clusteringIdentifier

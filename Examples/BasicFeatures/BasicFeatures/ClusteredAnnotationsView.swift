@@ -91,7 +91,7 @@ private class ViewModel: ObservableObject {
     ]
 }
 
-struct AnnotationsView: View {
+struct ClusteredAnnotationsView: View {
     @StateObject private var viewModel: ViewModel = .init()
 
     var body: some View {
@@ -100,17 +100,28 @@ struct AnnotationsView: View {
                 mapRect: $viewModel.mapRect,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
-                    MapAnnotation(coordinate: place.coordinate) {
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(.red)
-                            .frame(width: 33, height: 33)
-                            .overlay(
-                                Circle()
-                                    .fill(.purple)
-                                    .overlay(Circle().stroke())
-                                    .padding(8)
-                            )
-                    }
+                    MapAnnotation(
+                        coordinate: place.coordinate,
+                        clusteringIdentifier: "clusteringIdentifier",
+                        content: {
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(.red)
+                                .frame(width: 33, height: 33)
+                                .overlay(
+                                    Circle()
+                                        .fill(.purple)
+                                        .overlay(Circle().stroke())
+                                        .padding(8)
+                                )
+                        },
+                        contentCluster: {
+                            Circle()
+                                .fill(.purple)
+                                .frame(width: 33, height: 33)
+                                .overlay(Circle().stroke())
+                                .padding(8)
+                        }
+                    )
                 }
             )
 
@@ -122,13 +133,13 @@ struct AnnotationsView: View {
             )
 
         }
-        .navigationTitle("Annotations")
+        .navigationTitle("Clustered Annotations")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct AnnotationsView_Previews: PreviewProvider {
+struct ClusteredAnnotationsView_Previews: PreviewProvider {
     static var previews: some View {
-        AnnotationsView()
+        ClusteredAnnotationsView()
     }
 }
