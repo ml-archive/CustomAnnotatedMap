@@ -106,7 +106,7 @@ struct ClusteredAnnotationsView: View {
                         content: {
                             RoundedRectangle(cornerRadius: 8)
                                 .fill(.red)
-                                .frame(width: 33, height: 33)
+                                .frame(width: 44, height: 44)
                                 .overlay(
                                     Circle()
                                         .fill(.purple)
@@ -117,9 +117,12 @@ struct ClusteredAnnotationsView: View {
                         contentCluster: {
                             Circle()
                                 .fill(.purple)
-                                .frame(width: 33, height: 33)
-                                .overlay(Circle().stroke())
-                                .padding(8)
+                                .frame(width: 66, height: 66)
+                                .overlay(
+                                    Circle()
+                                        .stroke(lineWidth: 5)
+                                        .padding(2.5)
+                                )
                         }
                     )
                 }

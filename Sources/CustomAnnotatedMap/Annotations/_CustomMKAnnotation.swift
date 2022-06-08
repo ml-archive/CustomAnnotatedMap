@@ -49,6 +49,9 @@ where
             )
         }
         self.content = content
+
+        //TODO: set frame from content
+
         super.init(
             annotation: customMKAnnotation,
             reuseIdentifier: "customAnnotationViewReuseIdentifier"
@@ -63,6 +66,7 @@ where
     override func prepareForDisplay() {
         super.prepareForDisplay()
         self.image = self.content.snapshot()
+        // self.frame = .init(origin: .zero, size: .init(width: 22, height: 22))
     }
 }
 
