@@ -32,7 +32,6 @@ where Annotation: MapAnnotationProtocol {
             }
         )
         self._coordinateRegion = .constant(.none)
-
         self.annotations = annotations
         self.showsUserLocation = showsUserLocation
     }
