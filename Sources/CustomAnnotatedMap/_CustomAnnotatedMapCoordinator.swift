@@ -18,13 +18,18 @@ extension _CustomAnnotatedMapContent {
         }
 
         //MARK: - MKMapViewDelegate
-        public func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        public func mapView(
+            _ mapView: MKMapView,
+            regionDidChangeAnimated animated: Bool
+        ) {
             self.mapContent.coordinateRegion = CoordinateRegion(rawValue: mapView.region)
+            self.mapContent.mapRect = MapRect.init(rawValue: mapView.visibleMapRect)
         }
 
-        public func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation)
-            -> MKAnnotationView?
-        {
+        public func mapView(
+            _ mapView: MKMapView,
+            viewFor annotation: MKAnnotation
+        ) -> MKAnnotationView? {
             if let cluster = annotation as? MKClusterAnnotation {
                 return CustomClusterAnnotationView(cluster: cluster)
             } else {
@@ -34,16 +39,22 @@ extension _CustomAnnotatedMapContent {
 
         //MARK: - CLLocationManagerDelegate
         public func locationManager(
-            _ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]
+            _ manager: CLLocationManager,
+            didUpdateLocations locations: [CLLocation]
         ) {
             guard let center = locations.last?.coordinate else { return }
-            self.mapContent.coordinateRegion = CoordinateRegion.init(
-                center: center,
-                span: .init(
-                    latitudeDelta: 30,
-                    longitudeDelta: 30
+
+            if let coordinateRegion = self.mapContent.coordinateRegion {
+                self.mapContent.coordinateRegion = CoordinateRegion.init(
+                    center: center,
+                    span: coordinateRegion.span
                 )
-            )
+            } else if let mapRect = self.mapContent.mapRect {
+                self.mapContent.mapRect = MapRect.init(
+                    origin: .init(center),
+                    size: mapRect.size
+                )
+            }
         }
     }
 }

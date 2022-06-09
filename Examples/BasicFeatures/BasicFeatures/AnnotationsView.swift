@@ -18,7 +18,7 @@ private class ViewModel: ObservableObject {
         }
     }
 
-    private var _mapRect = MapRect(
+    @Published var mapRect = MapRect(
         origin: .init(
             CLLocationCoordinate2D(
                 latitude: 37.334_900,
@@ -27,20 +27,6 @@ private class ViewModel: ObservableObject {
         ),
         size: .init(width: 100_000_000, height: 100_000_000)
     )
-    // FIXME: coordinate values
-    // {
-    //     willSet { objectWillChange.send() }
-    // }
-
-    var mapRect: MapRect {
-        get { self._mapRect }
-        set { self._mapRect = newValue }
-    }
-
-    var mkMapRect: MKMapRect {
-        get { self._mapRect.rawValue }
-        set { self._mapRect = .init(rawValue: newValue) }
-    }
 
     let locations = [
         IdentifiablePlace(
@@ -114,12 +100,13 @@ struct AnnotationsView: View {
                 }
             )
 
-            //FIXME: check correct binding
             Text(
                 """
-                \($viewModel.mapRect.wrappedValue.origin.x) - \($viewModel.mapRect.wrappedValue.origin.y)
+                x: \(viewModel.mapRect.origin.x)
+                y: \(viewModel.mapRect.origin.y)
                 """
             )
+            .font(.footnote)
 
         }
         .navigationTitle("Annotations")

@@ -4,7 +4,8 @@ import SwiftUI
 public struct _CustomAnnotatedMapContent<Annotation>: UIViewRepresentable
 where Annotation: MapAnnotationProtocol {
     private var annotations: [Annotation]
-    @Binding var coordinateRegion: CoordinateRegion
+    @Binding var mapRect: MapRect?
+    @Binding var coordinateRegion: CoordinateRegion?
     private let showsUserLocation: Bool
 
     typealias CustomAnnotationView = _CustomAnnotationView<
@@ -22,7 +23,34 @@ where Annotation: MapAnnotationProtocol {
         annotations: [Annotation],
         showsUserLocation: Bool
     ) {
-        self._coordinateRegion = mapRect.coordinateRegion
+        self._mapRect = Binding(
+            get: { .some(mapRect.wrappedValue) },
+            set: {
+                if let value = $0 {
+                    mapRect.wrappedValue = value
+                }
+            }
+        )
+        self._coordinateRegion = .constant(.none)
+
+        self.annotations = annotations
+        self.showsUserLocation = showsUserLocation
+    }
+
+    public init(
+        coordinateRegion: Binding<CoordinateRegion>,
+        annotations: [Annotation],
+        showsUserLocation: Bool
+    ) {
+        self._mapRect = .constant(.none)
+        self._coordinateRegion = Binding(
+            get: { .some(coordinateRegion.wrappedValue) },
+            set: {
+                if let value = $0 {
+                    coordinateRegion.wrappedValue = value
+                }
+            }
+        )
         self.annotations = annotations
         self.showsUserLocation = showsUserLocation
     }
@@ -53,7 +81,15 @@ where Annotation: MapAnnotationProtocol {
 
     public func updateUIView(_ mapView: UIViewType, context: Context) {
         mapView.delegate = context.coordinator
-        mapView.setRegion(coordinateRegion.rawValue, animated: true)
         mapView.showsUserLocation = self.showsUserLocation
+        if let coordinateRegion = self.coordinateRegion?.rawValue {
+            //TODO: wait for animation to finish
+            mapView.setRegion(coordinateRegion, animated: true)
+        } else if let coordinateRegion = self.mapRect?.coordinateRegion.rawValue {
+            //TODO: wait for animation to finish
+            mapView.setRegion(coordinateRegion, animated: true)
+        } else {
+            fatalError()
+        }
     }
 }

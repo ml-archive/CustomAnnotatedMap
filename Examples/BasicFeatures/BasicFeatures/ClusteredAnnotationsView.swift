@@ -18,29 +18,10 @@ private class ViewModel: ObservableObject {
         }
     }
 
-    private var _mapRect = MapRect(
-        origin: .init(
-            CLLocationCoordinate2D(
-                latitude: 37.334_900,
-                longitude: -122.009_020
-            )
-        ),
-        size: .init(width: 100_000_000, height: 100_000_000)
+    @Published var coordinateRegion: CoordinateRegion = .init(
+        center: .init(latitude: 51.507222, longitude: -122.009_020),
+        span: .init(latitudeDelta: 30, longitudeDelta: 30)
     )
-    // FIXME: coordinate values
-    // {
-    //     willSet { objectWillChange.send() }
-    // }
-
-    var mapRect: MapRect {
-        get { self._mapRect }
-        set { self._mapRect = newValue }
-    }
-
-    var mkMapRect: MKMapRect {
-        get { self._mapRect.rawValue }
-        set { self._mapRect = .init(rawValue: newValue) }
-    }
 
     let locations = [
         IdentifiablePlace(
@@ -97,7 +78,7 @@ struct ClusteredAnnotationsView: View {
     var body: some View {
         VStack {
             CustomAnnotatedMap(
-                mapRect: $viewModel.mapRect,
+                coordinateRegion: $viewModel.coordinateRegion,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
                     MapAnnotation(
@@ -126,14 +107,26 @@ struct ClusteredAnnotationsView: View {
                         }
                     )
                 }
+                // selected: $viewModel.selectedAnnotation
+                // action: (Annotation) -> Void
+                /*
+                 action: { annotation in
+                 ...viewModel.bla(annotation)
+                 }
+                 */
             )
+            //.onAnnotationSelected {  annotation in
+            // ...
+            // }
+        
 
-            //FIXME: check correct binding
             Text(
                 """
-                \($viewModel.mapRect.wrappedValue.origin.x) - \($viewModel.mapRect.wrappedValue.origin.y)
+                lat: \(viewModel.coordinateRegion.center.latitude)
+                lon: \(viewModel.coordinateRegion.center.longitude)
                 """
             )
+            .font(.footnote)
 
         }
         .navigationTitle("Clustered Annotations")
