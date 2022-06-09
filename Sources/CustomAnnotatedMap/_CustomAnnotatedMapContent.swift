@@ -82,14 +82,15 @@ where Annotation: MapAnnotationProtocol {
     public func updateUIView(_ mapView: UIViewType, context: Context) {
         mapView.delegate = context.coordinator
         mapView.showsUserLocation = self.showsUserLocation
+
         if let coordinateRegion = self.coordinateRegion?.rawValue {
-            //TODO: wait for animation to finish
+            //FIXME: wait for animation to finish
             mapView.setRegion(coordinateRegion, animated: true)
         } else if let coordinateRegion = self.mapRect?.coordinateRegion.rawValue {
-            //TODO: wait for animation to finish
+            //FIXME: wait for animation to finish
             mapView.setRegion(coordinateRegion, animated: true)
         } else {
-            fatalError()
+            fatalError("Either `coordinateRegion` or `mapRect` must be not nil")
         }
     }
 }

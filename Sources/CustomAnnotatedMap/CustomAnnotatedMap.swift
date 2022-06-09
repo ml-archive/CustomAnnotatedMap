@@ -31,9 +31,9 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
             showsUserLocation: showsUserLocation
         )
     }
-    
+
     /// - Parameters:
-    /// - mapRect: The map rect to display.
+    /// - coordinateRegion: The coodinate region to display.
     /// - showsUserLocation: Whether to display the user's location in this Map
     ///   or not. Only takes effect if the user has authorized the app to access
     ///   their location.
