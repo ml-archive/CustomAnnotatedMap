@@ -7,7 +7,7 @@ public class _CustomMKAnnotation<Content, ContentCluster>: NSObject, MKAnnotatio
     @objc dynamic public var coordinate: CLLocationCoordinate2D
 
     let clusteringIdentifier: String?
-    let content: Content?
+    let content: Content
     let contentCluster: ContentCluster?
     //TODO: implement "selected view"
 
@@ -32,15 +32,10 @@ where
     Content: View,
     ContentCluster: View
 {
-    private var content: Content
-
     typealias CustomMKAnnotation = _CustomMKAnnotation<Content, ContentCluster>
 
     init(annotation: MKAnnotation) {
-        guard
-            let customMKAnnotation = annotation as? CustomMKAnnotation,
-            let content = customMKAnnotation.content
-        else {
+        guard let customMKAnnotation = annotation as? CustomMKAnnotation else {
             fatalError(
                 """
                 - _CustomClusterAnnotationView must be used only with `_CustomMKAnnotation`
@@ -48,25 +43,17 @@ where
                 """
             )
         }
-        self.content = content
-
-        //TODO: set frame from content
-
         super.init(
             annotation: customMKAnnotation,
             reuseIdentifier: "customAnnotationViewReuseIdentifier"
         )
         self.clusteringIdentifier = customMKAnnotation.clusteringIdentifier
+        self.addSubview(
+            UIHostingController(rootView: customMKAnnotation.content.ignoresSafeArea()).view)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func prepareForDisplay() {
-        super.prepareForDisplay()
-        self.image = self.content.snapshot()
-        // self.frame = .init(origin: .zero, size: .init(width: 22, height: 22))
     }
 }
 
@@ -77,14 +64,12 @@ where
     Content: View,
     ContentCluster: View
 {
-    private var content: ContentCluster
-
     typealias CustomMKAnnotation = _CustomMKAnnotation<Content, ContentCluster>
 
     init(cluster: MKClusterAnnotation) {
         guard
             let members = cluster.memberAnnotations as? [CustomMKAnnotation],
-            let content = members.first?.contentCluster
+            let contentCluster = members.first?.contentCluster
         else {
             fatalError(
                 """
@@ -94,19 +79,14 @@ where
                 """
             )
         }
-        self.content = content
         super.init(
             annotation: cluster,
             reuseIdentifier: "customClusterAnnotationViewReuseIdentifier"
         )
+        self.addSubview(UIHostingController(rootView: contentCluster.ignoresSafeArea()).view)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func prepareForDisplay() {
-        super.prepareForDisplay()
-        self.image = self.content.snapshot()
     }
 }
