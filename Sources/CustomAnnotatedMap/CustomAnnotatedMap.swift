@@ -18,14 +18,19 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
         annotationContent: @escaping (Items.Element) -> Annotation
     )
     where
-        Content == _CustomAnnotatedMapContent<Annotation>,
+        Content == _CustomAnnotatedMapContent<Items.Element.ID, Annotation>,
         Items: RandomAccessCollection,
         Annotation: MapAnnotationProtocol,
         Items.Element: Identifiable
     {
-        let annotations = annotationItems.map(annotationContent)
+        let annotations: [Items.Element.ID: Annotation] = Dictionary(
+            uniqueKeysWithValues: zip(
+                annotationItems.map(\.id),
+                annotationItems.map(annotationContent)
+            )
+        )
 
-        self.content = _CustomAnnotatedMapContent<Annotation>.init(
+        self.content = _CustomAnnotatedMapContent<Items.Element.ID, Annotation>.init(
             mapRect: mapRect,
             annotations: annotations,
             showsUserLocation: showsUserLocation
@@ -43,20 +48,30 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
         coordinateRegion: Binding<CoordinateRegion>,
         showsUserLocation: Bool = false,
         annotationItems: Items,
-        annotationContent: @escaping (Items.Element) -> Annotation
+        annotationContent: @escaping (Items.Element) -> Annotation,
+        action annotationDidSelect: @escaping (Items.Element) -> Void = { _ in }
     )
     where
-        Content == _CustomAnnotatedMapContent<Annotation>,
+        Content == _CustomAnnotatedMapContent<Items.Element.ID, Annotation>,
         Items: RandomAccessCollection,
         Annotation: MapAnnotationProtocol,
         Items.Element: Identifiable
     {
-        let annotations = annotationItems.map(annotationContent)
-
-        self.content = _CustomAnnotatedMapContent<Annotation>.init(
+        let annotations: [Items.Element.ID: Annotation] = Dictionary(
+            uniqueKeysWithValues: zip(
+                annotationItems.map(\.id),
+                annotationItems.map(annotationContent)
+            )
+        )
+        self.content = _CustomAnnotatedMapContent<Items.Element.ID, Annotation>.init(
             coordinateRegion: coordinateRegion,
             annotations: annotations,
-            showsUserLocation: showsUserLocation
+            showsUserLocation: showsUserLocation,
+            annotationDidSelect: { id in
+                if let item = annotationItems.first(where: { $0.id == id }) {
+                    annotationDidSelect(item)
+                }
+            }
         )
     }
 

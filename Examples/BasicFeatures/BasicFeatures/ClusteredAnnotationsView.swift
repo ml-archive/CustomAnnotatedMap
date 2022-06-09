@@ -35,27 +35,27 @@ private class ViewModel: ObservableObject {
             long: -0.1275
         ),
         IdentifiablePlace(
-            name: "Paris",
+            name: "Paris 1",
             lat: 48.8567,
             long: 2.3508
         ),
         IdentifiablePlace(
-            name: "Paris",
+            name: "Paris 2",
             lat: 48.8568,
             long: 2.3519
         ),
         IdentifiablePlace(
-            name: "Paris",
+            name: "Paris 3",
             lat: 48.8579,
             long: 2.3620
         ),
         IdentifiablePlace(
-            name: "Paris",
+            name: "Paris 4",
             lat: 48.8580,
             long: 2.3731
         ),
         IdentifiablePlace(
-            name: "Paris",
+            name: "Paris 5",
             lat: 48.8591,
             long: 2.3942
         ),
@@ -106,19 +106,11 @@ struct ClusteredAnnotationsView: View {
                                 )
                         }
                     )
+                },
+                action: { place in
+                    print(">>> selected:", place.name)
                 }
-                // selected: $viewModel.selectedAnnotation
-                // action: (Annotation) -> Void
-                /*
-                 action: { annotation in
-                 ...viewModel.bla(annotation)
-                 }
-                 */
             )
-            //.onAnnotationSelected {  annotation in
-            // ...
-            // }
-        
 
             Text(
                 """

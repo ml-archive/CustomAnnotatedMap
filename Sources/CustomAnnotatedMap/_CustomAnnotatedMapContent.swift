@@ -1,12 +1,16 @@
 import MapKit
 import SwiftUI
 
-public struct _CustomAnnotatedMapContent<Annotation>: UIViewRepresentable
-where Annotation: MapAnnotationProtocol {
-    private var annotations: [Annotation]
+public struct _CustomAnnotatedMapContent<ID, Annotation>: UIViewRepresentable
+where
+    ID: Hashable,
+    Annotation: MapAnnotationProtocol
+{
+    let annotations: [ID: Annotation]
     @Binding var mapRect: MapRect?
     @Binding var coordinateRegion: CoordinateRegion?
     private let showsUserLocation: Bool
+    var annotationDidSelect: (ID) -> Void = { _ in }
 
     typealias CustomAnnotationView = _CustomAnnotationView<
         Annotation.Content,
@@ -20,7 +24,7 @@ where Annotation: MapAnnotationProtocol {
 
     public init(
         mapRect: Binding<MapRect>,
-        annotations: [Annotation],
+        annotations: [ID: Annotation],
         showsUserLocation: Bool
     ) {
         self._mapRect = Binding(
@@ -38,8 +42,9 @@ where Annotation: MapAnnotationProtocol {
 
     public init(
         coordinateRegion: Binding<CoordinateRegion>,
-        annotations: [Annotation],
-        showsUserLocation: Bool
+        annotations: [ID: Annotation],
+        showsUserLocation: Bool,
+        annotationDidSelect: @escaping (ID) -> Void
     ) {
         self._mapRect = .constant(.none)
         self._coordinateRegion = Binding(
@@ -51,6 +56,7 @@ where Annotation: MapAnnotationProtocol {
             }
         )
         self.annotations = annotations
+        self.annotationDidSelect = annotationDidSelect
         self.showsUserLocation = showsUserLocation
     }
 
@@ -62,8 +68,8 @@ where Annotation: MapAnnotationProtocol {
         let mapView = MKMapView(frame: .zero)
         mapView.addAnnotations(
             annotations
-                .map(\.mkAnnotation)
-                .compactMap { $0 as? MKAnnotation }
+                .mapValues(\.mkAnnotation)
+                .compactMap { $0.value as? MKAnnotation }
         )
         mapView.register(
             CustomAnnotationView.self,

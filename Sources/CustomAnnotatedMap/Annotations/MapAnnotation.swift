@@ -26,8 +26,11 @@ where
     }
 }
 
-extension MapAnnotation where Content: View, ContentCluster == Never {
-
+extension MapAnnotation
+where
+    Content: View,
+    ContentCluster == Never
+{
     /// A customizable single annotation hat marks a map location
     public init(
         coordinate: CLLocationCoordinate2D,
