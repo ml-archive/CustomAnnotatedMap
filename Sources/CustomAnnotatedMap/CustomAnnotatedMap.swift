@@ -9,11 +9,13 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
     /// - showsUserLocation: Whether to display the user's location in this Map
     ///   or not. Only takes effect if the user has authorized the app to access
     ///   their location.
+    /// - userTrackingMode: How the map should respond to user location updates
     /// - annotationItems: The collection of data backing the annotation views
     /// - annotationContent: A closure producing the annotation content
     public init<Items, Annotation>(
         mapRect: Binding<MapRect>,
         showsUserLocation: Bool = false,
+        userTrackingMode: Binding<UserTrackingMode>? = nil,
         annotationItems: Items,
         annotationContent: @escaping (Items.Element) -> Annotation
     )
@@ -42,11 +44,13 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
     /// - showsUserLocation: Whether to display the user's location in this Map
     ///   or not. Only takes effect if the user has authorized the app to access
     ///   their location.
+    /// - userTrackingMode: How the map should respond to user location updates
     /// - annotationItems: The collection of data backing the annotation views
     /// - annotationContent: A closure producing the annotation content
     public init<Items, Annotation>(
         coordinateRegion: Binding<CoordinateRegion>,
         showsUserLocation: Bool = false,
+        userTrackingMode: Binding<UserTrackingMode>? = nil,
         annotationItems: Items,
         annotationContent: @escaping (Items.Element) -> Annotation,
         action annotationDidSelect: @escaping (Items.Element) -> Void = { _ in }
