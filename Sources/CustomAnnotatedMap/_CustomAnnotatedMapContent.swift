@@ -25,9 +25,10 @@ where
 
     public init(
         mapRect: Binding<MapRect>,
+        showsUserLocation: Bool,
         userTrackingMode: Binding<UserTrackingMode>?,
         annotations: [ID: Annotation],
-        showsUserLocation: Bool
+        annotationDidSelect: @escaping (ID) -> Void
     ) {
         self._mapRect = Binding(
             get: { .some(mapRect.wrappedValue) },
@@ -38,16 +39,17 @@ where
             }
         )
         self._coordinateRegion = .constant(.none)
-        self.annotations = annotations
         self.showsUserLocation = showsUserLocation
         self._userTrackingMode = userTrackingMode ?? .constant(.none)
+        self.annotations = annotations
+        self.annotationDidSelect = annotationDidSelect
     }
 
     public init(
         coordinateRegion: Binding<CoordinateRegion>,
-        annotations: [ID: Annotation],
         showsUserLocation: Bool,
         userTrackingMode: Binding<UserTrackingMode>?,
+        annotations: [ID: Annotation],
         annotationDidSelect: @escaping (ID) -> Void
     ) {
         self._mapRect = .constant(.none)
@@ -59,10 +61,10 @@ where
                 }
             }
         )
+        self.showsUserLocation = showsUserLocation
         self._userTrackingMode = userTrackingMode ?? .constant(.none)
         self.annotations = annotations
         self.annotationDidSelect = annotationDidSelect
-        self.showsUserLocation = showsUserLocation
     }
 
     public func makeCoordinator() -> _CustomAnnotatedMapCoordinator {
@@ -100,11 +102,10 @@ where
             mapView.userTrackingMode = userTrackingMode
         }
 
+        //FIXME: wait for animations to finish
         if let coordinateRegion = self.coordinateRegion?.rawValue {
-            //FIXME: wait for animation to finish
             mapView.setRegion(coordinateRegion, animated: true)
         } else if let coordinateRegion = self.mapRect?.coordinateRegion.rawValue {
-            //FIXME: wait for animation to finish
             mapView.setRegion(coordinateRegion, animated: true)
         } else {
             fatalError("Either `coordinateRegion` or `mapRect` must be not nil")

@@ -19,7 +19,8 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
         showsUserLocation: Bool = false,
         userTrackingMode: Binding<UserTrackingMode>? = nil,
         annotationItems: Items,
-        annotationContent: @escaping (Items.Element) -> Annotation
+        annotationContent: @escaping (Items.Element) -> Annotation,
+        action annotationDidSelect: @escaping (Items.Element) -> Void = { _ in }
     )
     where
         Content == _CustomAnnotatedMapContent<Items.Element.ID, Annotation>,
@@ -36,9 +37,14 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
 
         self.content = _CustomAnnotatedMapContent<Items.Element.ID, Annotation>.init(
             mapRect: mapRect,
+            showsUserLocation: showsUserLocation,
             userTrackingMode: userTrackingMode,
             annotations: annotations,
-            showsUserLocation: showsUserLocation
+            annotationDidSelect: { id in
+                if let item = annotationItems.first(where: { $0.id == id }) {
+                    annotationDidSelect(item)
+                }
+            }
         )
     }
     /// Creates an instance showing a specific region and optionally configuring
@@ -76,9 +82,9 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
 
         self.content = _CustomAnnotatedMapContent<Items.Element.ID, Annotation>.init(
             coordinateRegion: coordinateRegion,
-            annotations: annotations,
             showsUserLocation: showsUserLocation,
             userTrackingMode: userTrackingMode,
+            annotations: annotations,
             annotationDidSelect: { id in
                 if let item = annotationItems.first(where: { $0.id == id }) {
                     annotationDidSelect(item)

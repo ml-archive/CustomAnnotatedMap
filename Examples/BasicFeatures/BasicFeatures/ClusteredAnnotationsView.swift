@@ -76,11 +76,12 @@ struct ClusteredAnnotationsView: View {
     @StateObject private var viewModel: ViewModel = .init()
 
     var body: some View {
-        VStack {
+        VStack {            
             CustomAnnotatedMap(
                 coordinateRegion: $viewModel.coordinateRegion,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
+                    
                     MapAnnotation(
                         coordinate: place.coordinate,
                         clusteringIdentifier: "clusteringIdentifier",
