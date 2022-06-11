@@ -36,6 +36,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
 
         self.content = _CustomAnnotatedMapContent<Items.Element.ID, Annotation>.init(
             mapRect: mapRect,
+            userTrackingMode: userTrackingMode,
             annotations: annotations,
             showsUserLocation: showsUserLocation
         )
@@ -77,6 +78,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
             coordinateRegion: coordinateRegion,
             annotations: annotations,
             showsUserLocation: showsUserLocation,
+            userTrackingMode: userTrackingMode,
             annotationDidSelect: { id in
                 if let item = annotationItems.first(where: { $0.id == id }) {
                     annotationDidSelect(item)

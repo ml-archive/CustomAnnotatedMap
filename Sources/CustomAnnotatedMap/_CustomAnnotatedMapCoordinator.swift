@@ -47,5 +47,21 @@ extension CLLocationCoordinate2D: Equatable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(latitude)
         hasher.combine(longitude)
+        // MARK: - Tracking the User Location
+        public func mapView(
+            _ mapView: MKMapView,
+            didUpdate userLocation: MKUserLocation
+        ) {
+            //
+        }
+        public func mapView(
+            _ mapView: MKMapView,
+            didChange mode: MKUserTrackingMode,
+            animated: Bool
+        ) {
+            if let userTrackingMode = UserTrackingMode(rawValue: mode.rawValue) {
+                self.mapContent.userTrackingMode = userTrackingMode
+            }
+        }
     }
 }
