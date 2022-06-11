@@ -1,9 +1,11 @@
-import MapKit
 import SwiftUI
 
 public struct CustomAnnotatedMap<Content>: View where Content: View {
-    private let content: Content
 
+    /// Creates an instance showing a specific region and optionally configuring
+    /// available interactions, user location and tracking behavior as well as
+    /// annotations.
+    ///
     /// - Parameters:
     /// - mapRect: The map rect to display.
     /// - showsUserLocation: Whether to display the user's location in this Map
@@ -38,7 +40,10 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
             showsUserLocation: showsUserLocation
         )
     }
-
+    /// Creates an instance showing a specific region and optionally configuring
+    /// available interactions, user location and tracking behavior as well as
+    /// annotations.
+    ///
     /// - Parameters:
     /// - coordinateRegion: The coodinate region to display.
     /// - showsUserLocation: Whether to display the user's location in this Map
@@ -67,6 +72,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
                 annotationItems.map(annotationContent)
             )
         )
+
         self.content = _CustomAnnotatedMapContent<Items.Element.ID, Annotation>.init(
             coordinateRegion: coordinateRegion,
             annotations: annotations,
@@ -78,6 +84,8 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
             }
         )
     }
+
+    private let content: Content
 
     public var body: some View { content }
 }
