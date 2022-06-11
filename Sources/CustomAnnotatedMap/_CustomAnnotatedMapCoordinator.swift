@@ -25,8 +25,12 @@ extension _CustomAnnotatedMapContent {
         ) -> MKAnnotationView? {
             if let cluster = annotation as? MKClusterAnnotation {
                 return CustomClusterAnnotationView(cluster: cluster)
-            } else {
+            } else if let annotation = annotation
+                as? _CustomMKAnnotation<Annotation.Content, Annotation.ContentCluster>
+            {
                 return CustomAnnotationView(annotation: annotation)
+            } else {
+                return nil
             }
         }
 
@@ -47,7 +51,8 @@ extension _CustomAnnotatedMapContent {
             _ mapView: MKMapView,
             didUpdate userLocation: MKUserLocation
         ) {
-            //
+            //TODO: verify if the maps updates location automatically or if it has to be updated
+            print(">>> MKUserLocation:", userLocation)
         }
         public func mapView(
             _ mapView: MKMapView,

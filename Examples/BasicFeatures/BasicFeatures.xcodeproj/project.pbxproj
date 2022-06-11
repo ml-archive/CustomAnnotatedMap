@@ -14,6 +14,8 @@
 		403121AC284A090B00A07934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 403121AB284A090B00A07934 /* Preview Assets.xcassets */; };
 		40B18CA6284F692000675DB4 /* CustomAnnotatedMap in Frameworks */ = {isa = PBXBuildFile; productRef = 40B18CA5284F692000675DB4 /* CustomAnnotatedMap */; };
 		40B18CA8284F6EB900675DB4 /* ClusteredAnnotationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B18CA7284F6EB900675DB4 /* ClusteredAnnotationsView.swift */; };
+		40C6925E2854F40A00192436 /* MultiClusteredAnnotationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C6925D2854F40A00192436 /* MultiClusteredAnnotationsView.swift */; };
+		40C6927A2854F99900192436 /* UserLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C692792854F99900192436 /* UserLocationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		403121A8284A090B00A07934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		403121AB284A090B00A07934 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		40B18CA7284F6EB900675DB4 /* ClusteredAnnotationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusteredAnnotationsView.swift; sourceTree = "<group>"; };
+		40C6925D2854F40A00192436 /* MultiClusteredAnnotationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiClusteredAnnotationsView.swift; sourceTree = "<group>"; };
+		40C692792854F99900192436 /* UserLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +68,8 @@
 				403121A4284A090A00A07934 /* BasicFeaturesApp.swift */,
 				40B18CA7284F6EB900675DB4 /* ClusteredAnnotationsView.swift */,
 				4012FDCA284A1F5F00677202 /* ContentView.swift */,
+				40C6925D2854F40A00192436 /* MultiClusteredAnnotationsView.swift */,
+				40C692792854F99900192436 /* UserLocationView.swift */,
 				403121A8284A090B00A07934 /* Assets.xcassets */,
 				403121AA284A090B00A07934 /* Preview Content */,
 			);
@@ -159,6 +165,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4012FDCF284A465C00677202 /* AnnotationsView.swift in Sources */,
+				40C6927A2854F99900192436 /* UserLocationView.swift in Sources */,
+				40C6925E2854F40A00192436 /* MultiClusteredAnnotationsView.swift in Sources */,
 				40B18CA8284F6EB900675DB4 /* ClusteredAnnotationsView.swift in Sources */,
 				403121A5284A090A00A07934 /* BasicFeaturesApp.swift in Sources */,
 				4012FDCB284A1F5F00677202 /* ContentView.swift in Sources */,

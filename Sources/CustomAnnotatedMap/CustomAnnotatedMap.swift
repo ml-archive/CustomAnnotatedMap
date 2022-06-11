@@ -47,6 +47,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
             }
         )
     }
+
     /// Creates an instance showing a specific region and optionally configuring
     /// available interactions, user location and tracking behavior as well as
     /// annotations.

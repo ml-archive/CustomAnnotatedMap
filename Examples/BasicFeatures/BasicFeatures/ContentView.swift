@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  BasicFeatures
-//
-//  Created by Cristian Díaz on 03.06.22.
-//
-
 import SwiftUI
 
 struct ContentView: View {
@@ -16,6 +9,9 @@ struct ContentView: View {
                 }
                 NavigationLink("Clustered Annotations") {
                     ClusteredAnnotationsView()
+                }
+                NavigationLink("User Location") {
+                    UserLocationView()
                 }
             }
             .navigationTitle("Basic Map Features")

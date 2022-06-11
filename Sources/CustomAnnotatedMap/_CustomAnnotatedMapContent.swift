@@ -99,7 +99,7 @@ where
         if let userTrackingMode = MKUserTrackingMode(
             rawValue: self.userTrackingMode.rawValue
         ) {
-            mapView.userTrackingMode = userTrackingMode
+            mapView.setUserTrackingMode(userTrackingMode, animated: true)
         }
 
         //FIXME: wait for animations to finish
