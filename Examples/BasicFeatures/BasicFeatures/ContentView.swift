@@ -7,8 +7,14 @@ struct ContentView: View {
                 NavigationLink("Annotations") {
                     AnnotationsView()
                 }
+                NavigationLink("Multi Annotations") {
+                    MultiAnnotationsView()
+                }
                 NavigationLink("Clustered Annotations") {
                     ClusteredAnnotationsView()
+                }
+                NavigationLink("Multi Clustered Annotations") {
+                    MultiClusteredAnnotationsView()
                 }
                 NavigationLink("User Location") {
                     UserLocationView()

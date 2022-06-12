@@ -88,52 +88,34 @@ private class ViewModel: ObservableObject {
     ]
 }
 
-struct MultiClusteredAnnotationsView: View {
+struct MultiAnnotationsView: View {
     @StateObject private var viewModel: ViewModel = .init()
 
     /// Swift <= 5.6 Requires explicit type erasure (wrapping `AnyView`) to avoid "Function declares an opaque return type, but the return statements in its body do not have matching underlying types"
-    @AnnotationBuilder fileprivate func annotationForLocation(_ place: ViewModel.IdentifiablePlace)
+    fileprivate func annotationForLocation(_ place: ViewModel.IdentifiablePlace)
         -> some MapAnnotationProtocol
     {
         switch place.placeType {
         case .one:
-            MapAnnotation(
+            return MapAnnotation(
                 location: place.location,
-                clusteringIdentifier: "clusteringIdentifierType1",
                 content: {
                     AnyView(
                         Circle()
                             .fill(.red)
-                            .frame(width: 22, height: 22)
-                    )
-                },
-                contentCluster: {
-                    AnyView(
-                        Circle()
-                            .fill(.red)
                             .frame(width: 33, height: 33)
-                            .overlay(Circle().stroke())
                     )
                 }
             )
 
         case .two:
-            MapAnnotation(
+            return MapAnnotation(
                 location: place.location,
-                clusteringIdentifier: "clusteringIdentifierType2",
                 content: {
                     AnyView(
                         Rectangle()
                             .fill(.purple)
-                            .frame(width: 22, height: 22)
-                    )
-                },
-                contentCluster: {
-                    AnyView(
-                        Rectangle()
-                            .fill(.purple)
                             .frame(width: 33, height: 33)
-                            .overlay(Rectangle().stroke())
                     )
                 }
             )
@@ -165,8 +147,8 @@ struct MultiClusteredAnnotationsView: View {
     }
 }
 
-struct MultiClusteredAnnotationsView_Previews: PreviewProvider {
+struct MultiAnnotationsViewView_Previews: PreviewProvider {
     static var previews: some View {
-        MultiClusteredAnnotationsView()
+        MultiAnnotationsView()
     }
 }

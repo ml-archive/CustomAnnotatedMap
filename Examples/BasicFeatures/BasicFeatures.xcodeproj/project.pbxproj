@@ -12,8 +12,9 @@
 		403121A5284A090A00A07934 /* BasicFeaturesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403121A4284A090A00A07934 /* BasicFeaturesApp.swift */; };
 		403121A9284A090B00A07934 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 403121A8284A090B00A07934 /* Assets.xcassets */; };
 		403121AC284A090B00A07934 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 403121AB284A090B00A07934 /* Preview Assets.xcassets */; };
-		40B18CA6284F692000675DB4 /* CustomAnnotatedMap in Frameworks */ = {isa = PBXBuildFile; productRef = 40B18CA5284F692000675DB4 /* CustomAnnotatedMap */; };
+		404F035E2856058000DB2F28 /* CustomAnnotatedMap in Frameworks */ = {isa = PBXBuildFile; productRef = 404F035D2856058000DB2F28 /* CustomAnnotatedMap */; };
 		40B18CA8284F6EB900675DB4 /* ClusteredAnnotationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40B18CA7284F6EB900675DB4 /* ClusteredAnnotationsView.swift */; };
+		40C5D8C9285696FD0075C333 /* MultiAnnotationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C5D8C8285696FD0075C333 /* MultiAnnotationsView.swift */; };
 		40C6925E2854F40A00192436 /* MultiClusteredAnnotationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C6925D2854F40A00192436 /* MultiClusteredAnnotationsView.swift */; };
 		40C6927A2854F99900192436 /* UserLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C692792854F99900192436 /* UserLocationView.swift */; };
 /* End PBXBuildFile section */
@@ -27,6 +28,7 @@
 		403121A8284A090B00A07934 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		403121AB284A090B00A07934 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		40B18CA7284F6EB900675DB4 /* ClusteredAnnotationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClusteredAnnotationsView.swift; sourceTree = "<group>"; };
+		40C5D8C8285696FD0075C333 /* MultiAnnotationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiAnnotationsView.swift; sourceTree = "<group>"; };
 		40C6925D2854F40A00192436 /* MultiClusteredAnnotationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiClusteredAnnotationsView.swift; sourceTree = "<group>"; };
 		40C692792854F99900192436 /* UserLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLocationView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -36,7 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40B18CA6284F692000675DB4 /* CustomAnnotatedMap in Frameworks */,
+				404F035E2856058000DB2F28 /* CustomAnnotatedMap in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +67,7 @@
 			children = (
 				4012FDD0284A47AF00677202 /* Info.plist */,
 				4012FDCE284A465C00677202 /* AnnotationsView.swift */,
+				40C5D8C8285696FD0075C333 /* MultiAnnotationsView.swift */,
 				403121A4284A090A00A07934 /* BasicFeaturesApp.swift */,
 				40B18CA7284F6EB900675DB4 /* ClusteredAnnotationsView.swift */,
 				4012FDCA284A1F5F00677202 /* ContentView.swift */,
@@ -108,7 +111,7 @@
 			);
 			name = BasicFeatures;
 			packageProductDependencies = (
-				40B18CA5284F692000675DB4 /* CustomAnnotatedMap */,
+				404F035D2856058000DB2F28 /* CustomAnnotatedMap */,
 			);
 			productName = BasicFeatures;
 			productReference = 403121A1284A090A00A07934 /* BasicFeatures.app */;
@@ -164,6 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40C5D8C9285696FD0075C333 /* MultiAnnotationsView.swift in Sources */,
 				4012FDCF284A465C00677202 /* AnnotationsView.swift in Sources */,
 				40C6927A2854F99900192436 /* UserLocationView.swift in Sources */,
 				40C6925E2854F40A00192436 /* MultiClusteredAnnotationsView.swift in Sources */,
@@ -295,6 +299,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BasicFeatures/Preview Content\"";
@@ -316,6 +321,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.monstarlab.BasicFeatures;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -327,6 +333,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"BasicFeatures/Preview Content\"";
@@ -348,6 +355,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = edu.monstarlab.BasicFeatures;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -378,7 +386,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		40B18CA5284F692000675DB4 /* CustomAnnotatedMap */ = {
+		404F035D2856058000DB2F28 /* CustomAnnotatedMap */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CustomAnnotatedMap;
 		};
