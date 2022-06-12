@@ -6,12 +6,10 @@ where
     ID: Hashable,
     Annotation: MapAnnotationProtocol
 {
-    let annotations: [ID: Annotation]
-    @Binding var mapRect: MapRect?
-    @Binding var coordinateRegion: CoordinateRegion?
-    private let showsUserLocation: Bool
-    @Binding var userTrackingMode: UserTrackingMode
-    var annotationDidSelect: (ID) -> Void = { _ in }
+    typealias CustomMKAnnotation = _CustomMKAnnotation<
+        Annotation.Content,
+        Annotation.ContentCluster
+    >
 
     typealias CustomAnnotationView = _CustomAnnotationView<
         Annotation.Content,
@@ -22,6 +20,13 @@ where
         Annotation.Content,
         Annotation.ContentCluster
     >
+
+    @Binding var mapRect: MapRect?
+    @Binding var coordinateRegion: CoordinateRegion?
+    private let showsUserLocation: Bool
+    @Binding var userTrackingMode: UserTrackingMode
+    let annotations: [ID: Annotation]
+    var annotationDidSelect: (ID) -> Void = { _ in }
 
     public init(
         mapRect: Binding<MapRect>,

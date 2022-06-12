@@ -3,6 +3,7 @@ import MapKit
 import SwiftUI
 
 extension _CustomAnnotatedMapContent {
+
     public class _CustomAnnotatedMapCoordinator: NSObject, MKMapViewDelegate {
         private var mapContent: _CustomAnnotatedMapContent
 
@@ -25,10 +26,11 @@ extension _CustomAnnotatedMapContent {
         ) -> MKAnnotationView? {
             if let cluster = annotation as? MKClusterAnnotation {
                 return CustomClusterAnnotationView(cluster: cluster)
-            } else if let annotation = annotation
-                as? _CustomMKAnnotation<Annotation.Content, Annotation.ContentCluster>
-            {
+            } else if let annotation = annotation as? CustomMKAnnotation {
                 return CustomAnnotationView(annotation: annotation)
+            } else if let annotation = annotation as? MKUserLocation {
+                // This is done automatically by `MapKit` but expressed explicitly for clarity
+                return MKUserLocationView(annotation: annotation, reuseIdentifier: nil)
             } else {
                 return nil
             }
@@ -49,13 +51,6 @@ extension _CustomAnnotatedMapContent {
         // MARK: - Tracking the User Location
         public func mapView(
             _ mapView: MKMapView,
-            didUpdate userLocation: MKUserLocation
-        ) {
-            //TODO: verify if the maps updates location automatically or if it has to be updated
-            print(">>> MKUserLocation:", userLocation)
-        }
-        public func mapView(
-            _ mapView: MKMapView,
             didChange mode: MKUserTrackingMode,
             animated: Bool
         ) {
@@ -64,4 +59,5 @@ extension _CustomAnnotatedMapContent {
             }
         }
     }
+
 }
