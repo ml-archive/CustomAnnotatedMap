@@ -17,6 +17,13 @@ public struct MapRect {
         self.rawValue = .init(x: x, y: y, width: width, height: height)
     }
 
+    public init(location: Location, width: Double, height: Double) {
+        self.rawValue = .init(
+            origin: .init(location.coordinate),
+            size: .init(width: width, height: height)
+        )
+    }
+
     public init() {
         self.rawValue = .init()
     }

@@ -1,31 +1,23 @@
 import CustomAnnotatedMap
-import MapKit
 import SwiftUI
 
 private class ViewModel: ObservableObject {
     struct IdentifiablePlace: Identifiable {
         let id: UUID
         let name: String
-        let coordinate: CLLocationCoordinate2D
+        let location: Location
 
         init(id: UUID = UUID(), name: String, lat: Double, long: Double) {
             self.id = id
             self.name = name
-            self.coordinate = CLLocationCoordinate2D(
-                latitude: lat,
-                longitude: long
-            )
+            self.location = Location(latitude: lat, longitude: long)
         }
     }
 
     @Published var mapRect = MapRect(
-        origin: .init(
-            CLLocationCoordinate2D(
-                latitude: 37.334_900,
-                longitude: -122.009_020
-            )
-        ),
-        size: .init(width: 100_000_000, height: 100_000_000)
+        location: .centerOfBerlin,
+        width: 100_000_000,
+        height: 100_000_000
     )
 
     let locations = [
@@ -86,7 +78,7 @@ struct AnnotationsView: View {
                 mapRect: $viewModel.mapRect,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
-                    MapAnnotation(coordinate: place.coordinate) {
+                    MapAnnotation(location: place.location) {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(.red)
                             .frame(width: 33, height: 33)

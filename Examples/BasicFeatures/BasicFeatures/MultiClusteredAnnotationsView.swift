@@ -1,5 +1,4 @@
 import CustomAnnotatedMap
-import MapKit
 import SwiftUI
 
 private class ViewModel: ObservableObject {
@@ -11,15 +10,19 @@ private class ViewModel: ObservableObject {
 
         let id: UUID
         let name: String
-        let coordinate: CLLocationCoordinate2D
+        let location: Location
         let placeType: PlaceType
 
         init(
-            id: UUID = UUID(), name: String, lat: Double, long: Double, placeType: PlaceType = .one
+            id: UUID = UUID(),
+            name: String,
+            lat: Double,
+            long: Double,
+            placeType: PlaceType = .one
         ) {
             self.id = id
             self.name = name
-            self.coordinate = CLLocationCoordinate2D(
+            self.location = Location(
                 latitude: lat,
                 longitude: long
             )
@@ -28,8 +31,9 @@ private class ViewModel: ObservableObject {
     }
 
     @Published var coordinateRegion: CoordinateRegion = .init(
-        center: .init(latitude: 51.507222, longitude: -122.009_020),
-        span: .init(latitudeDelta: 30, longitudeDelta: 30)
+        location: .centerOfBerlin,
+        latitudeDelta: 30,
+        longitudeDelta: 30
     )
 
     let locations = [
@@ -93,7 +97,7 @@ struct MultiClusteredAnnotationsView: View {
                 coordinateRegion: $viewModel.coordinateRegion,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
-                    MapAnnotation.init(coordinate: place.coordinate, content: {})
+                    MapAnnotation(location: place.location, content: {})
                     //FIXME: why? an enum cant be used here ? @ViewBuilder somehow?
                     // switch place.type {
                     // case .one:

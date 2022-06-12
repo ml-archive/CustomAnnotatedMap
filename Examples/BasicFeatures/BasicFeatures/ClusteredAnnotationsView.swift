@@ -1,17 +1,16 @@
 import CustomAnnotatedMap
-import MapKit
 import SwiftUI
 
 private class ViewModel: ObservableObject {
     struct IdentifiablePlace: Identifiable {
         let id: UUID
         let name: String
-        let coordinate: CLLocationCoordinate2D
+        let location: Location
 
         init(id: UUID = UUID(), name: String, lat: Double, long: Double) {
             self.id = id
             self.name = name
-            self.coordinate = CLLocationCoordinate2D(
+            self.location = Location(
                 latitude: lat,
                 longitude: long
             )
@@ -19,8 +18,9 @@ private class ViewModel: ObservableObject {
     }
 
     @Published var coordinateRegion: CoordinateRegion = .init(
-        center: .init(latitude: 51.507222, longitude: -122.009_020),
-        span: .init(latitudeDelta: 30, longitudeDelta: 30)
+        location: .centerOfBerlin,
+        latitudeDelta: 30,
+        longitudeDelta: 30
     )
 
     let locations = [
@@ -76,14 +76,14 @@ struct ClusteredAnnotationsView: View {
     @StateObject private var viewModel: ViewModel = .init()
 
     var body: some View {
-        VStack {            
+        VStack {
             CustomAnnotatedMap(
                 coordinateRegion: $viewModel.coordinateRegion,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
-                    
+
                     MapAnnotation(
-                        coordinate: place.coordinate,
+                        location: place.location,
                         clusteringIdentifier: "clusteringIdentifier",
                         content: {
                             RoundedRectangle(cornerRadius: 8)

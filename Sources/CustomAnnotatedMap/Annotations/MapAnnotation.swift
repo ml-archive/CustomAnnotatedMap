@@ -1,5 +1,3 @@
-import CoreLocation
-import MapKit
 import SwiftUI
 
 public struct MapAnnotation<Content, ContentCluster>: MapAnnotationProtocol
@@ -11,14 +9,14 @@ where
 
     /// A customizable annotation that can cluster together that marks a map location
     public init(
-        coordinate: CLLocationCoordinate2D,
+        location: Location,
         clusteringIdentifier: String,
         anchorPoint: CGPoint = .init(x: 0.5, y: 0.5),
         @ViewBuilder content: () -> Content,
         @ViewBuilder contentCluster: () -> ContentCluster
     ) {
         self.mkAnnotation = _CustomMKAnnotation.init(
-            coordinate: coordinate,
+            coordinate: location.coordinate,
             clusteringIdentifier: clusteringIdentifier,
             content: content(),
             contentCluster: contentCluster()
@@ -33,12 +31,12 @@ where
 {
     /// A customizable single annotation hat marks a map location
     public init(
-        coordinate: CLLocationCoordinate2D,
+        location: Location,
         anchorPoint: CGPoint = .init(x: 0.5, y: 0.5),
         @ViewBuilder content: () -> Content
     ) {
         self.mkAnnotation = _CustomMKAnnotation.init(
-            coordinate: coordinate,
+            coordinate: location.coordinate,
             content: content()
         )
     }
