@@ -92,13 +92,17 @@ where
     }
 
     public func updateUIView(_ mapView: UIViewType, context: Context) {
-        mapView.delegate = context.coordinator
-        mapView.showsUserLocation = self.showsUserLocation
+        if mapView.delegate == nil {
+            mapView.delegate = context.coordinator
+        }
 
-        // TODO: consider making more convenient the access to rawValue
-        if let userTrackingMode = MKUserTrackingMode(
-            rawValue: self.userTrackingMode.rawValue
-        ) {
+        if mapView.showsUserLocation != self.showsUserLocation {
+            mapView.showsUserLocation = self.showsUserLocation
+        }
+
+        if let userTrackingMode = MKUserTrackingMode(rawValue: self.userTrackingMode.rawValue),
+            mapView.userTrackingMode != userTrackingMode
+        {
             mapView.setUserTrackingMode(userTrackingMode, animated: true)
         }
 
