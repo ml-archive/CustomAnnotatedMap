@@ -19,7 +19,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
         showsUserLocation: Bool = false,
         userTrackingMode: Binding<UserTrackingMode>? = nil,
         annotationItems: Items,
-        annotationContent: @escaping (Items.Element) -> Annotation,
+        @AnnotationBuilder annotationContent: (Items.Element) -> Annotation,
         action annotationDidSelect: @escaping (Items.Element) -> Void = { _ in }
     )
     where
@@ -47,6 +47,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
             }
         )
     }
+
     /// Creates an instance showing a specific region and optionally configuring
     /// available interactions, user location and tracking behavior as well as
     /// annotations.
@@ -64,7 +65,7 @@ public struct CustomAnnotatedMap<Content>: View where Content: View {
         showsUserLocation: Bool = false,
         userTrackingMode: Binding<UserTrackingMode>? = nil,
         annotationItems: Items,
-        annotationContent: @escaping (Items.Element) -> Annotation,
+        @AnnotationBuilder annotationContent: (Items.Element) -> Annotation,
         action annotationDidSelect: @escaping (Items.Element) -> Void = { _ in }
     )
     where

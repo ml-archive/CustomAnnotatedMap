@@ -6,12 +6,10 @@ where
     ID: Hashable,
     Annotation: MapAnnotationProtocol
 {
-    let annotations: [ID: Annotation]
-    @Binding var mapRect: MapRect?
-    @Binding var coordinateRegion: CoordinateRegion?
-    private let showsUserLocation: Bool
-    @Binding var userTrackingMode: UserTrackingMode
-    var annotationDidSelect: (ID) -> Void = { _ in }
+    typealias CustomMKAnnotation = _CustomMKAnnotation<
+        Annotation.Content,
+        Annotation.ContentCluster
+    >
 
     typealias CustomAnnotationView = _CustomAnnotationView<
         Annotation.Content,
@@ -22,6 +20,13 @@ where
         Annotation.Content,
         Annotation.ContentCluster
     >
+
+    @Binding var mapRect: MapRect?
+    @Binding var coordinateRegion: CoordinateRegion?
+    private let showsUserLocation: Bool
+    @Binding var userTrackingMode: UserTrackingMode
+    let annotations: [ID: Annotation]
+    var annotationDidSelect: (ID) -> Void = { _ in }
 
     public init(
         mapRect: Binding<MapRect>,
@@ -92,14 +97,18 @@ where
     }
 
     public func updateUIView(_ mapView: UIViewType, context: Context) {
-        mapView.delegate = context.coordinator
-        mapView.showsUserLocation = self.showsUserLocation
+        if mapView.delegate == nil {
+            mapView.delegate = context.coordinator
+        }
 
-        // TODO: consider making more convenient the access to rawValue
-        if let userTrackingMode = MKUserTrackingMode(
-            rawValue: self.userTrackingMode.rawValue
-        ) {
-            mapView.userTrackingMode = userTrackingMode
+        if mapView.showsUserLocation != self.showsUserLocation {
+            mapView.showsUserLocation = self.showsUserLocation
+        }
+
+        if let userTrackingMode = MKUserTrackingMode(rawValue: self.userTrackingMode.rawValue),
+            mapView.userTrackingMode != userTrackingMode
+        {
+            mapView.setUserTrackingMode(userTrackingMode, animated: true)
         }
 
         //FIXME: wait for animations to finish

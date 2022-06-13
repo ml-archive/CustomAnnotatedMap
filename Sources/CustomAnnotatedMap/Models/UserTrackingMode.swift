@@ -1,7 +1,7 @@
 import Foundation
 import MapKit
 
-public enum UserTrackingMode: Int, Equatable {
+public enum UserTrackingMode: Int, Equatable, CaseIterable {
     /// the user's location is not followed
     case none = 0
 
@@ -23,6 +23,19 @@ extension UserTrackingMode {
             self = .followWithHeading
         @unknown default:
             return nil
+        }
+    }
+}
+
+extension UserTrackingMode: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .none:
+            return "None"
+        case .follow:
+            return "Follow"
+        case .followWithHeading:
+            return "Heading"
         }
     }
 }

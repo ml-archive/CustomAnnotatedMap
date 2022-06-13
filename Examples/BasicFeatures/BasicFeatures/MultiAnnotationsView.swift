@@ -3,17 +3,30 @@ import SwiftUI
 
 private class ViewModel: ObservableObject {
     struct IdentifiablePlace: Identifiable {
+        enum PlaceType {
+            case one
+            case two
+        }
+
         let id: UUID
         let name: String
         let location: Location
+        let placeType: PlaceType
 
-        init(id: UUID = UUID(), name: String, lat: Double, long: Double) {
+        init(
+            id: UUID = UUID(),
+            name: String,
+            lat: Double,
+            long: Double,
+            placeType: PlaceType = .one
+        ) {
             self.id = id
             self.name = name
             self.location = Location(
                 latitude: lat,
                 longitude: long
             )
+            self.placeType = placeType
         }
     }
 
@@ -52,17 +65,20 @@ private class ViewModel: ObservableObject {
         IdentifiablePlace(
             name: "Paris 4",
             lat: 48.8580,
-            long: 2.3731
+            long: 2.3731,
+            placeType: .two
         ),
         IdentifiablePlace(
             name: "Paris 5",
             lat: 48.8591,
-            long: 2.3942
+            long: 2.3942,
+            placeType: .two
         ),
         IdentifiablePlace(
             name: "Rome",
             lat: 41.9,
-            long: 12.5
+            long: 12.5,
+            placeType: .two
         ),
         IdentifiablePlace(
             name: "Washington DC",
@@ -72,42 +88,46 @@ private class ViewModel: ObservableObject {
     ]
 }
 
-struct ClusteredAnnotationsView: View {
+struct MultiAnnotationsView: View {
     @StateObject private var viewModel: ViewModel = .init()
+
+    /// Swift <= 5.6 Requires explicit type erasure (wrapping `AnyView`) to avoid "Function declares an opaque return type, but the return statements in its body do not have matching underlying types"
+    fileprivate func annotationForLocation(_ place: ViewModel.IdentifiablePlace)
+        -> some MapAnnotationProtocol
+    {
+        switch place.placeType {
+        case .one:
+            return MapAnnotation(
+                location: place.location,
+                content: {
+                    AnyView(
+                        Circle()
+                            .fill(.red)
+                            .frame(width: 33, height: 33)
+                    )
+                }
+            )
+
+        case .two:
+            return MapAnnotation(
+                location: place.location,
+                content: {
+                    AnyView(
+                        Rectangle()
+                            .fill(.purple)
+                            .frame(width: 33, height: 33)
+                    )
+                }
+            )
+        }
+    }
 
     var body: some View {
         VStack {
             CustomAnnotatedMap(
                 coordinateRegion: $viewModel.coordinateRegion,
                 annotationItems: viewModel.locations,
-                annotationContent: { place in
-
-                    MapAnnotation(
-                        location: place.location,
-                        clusteringIdentifier: "clusteringIdentifier",
-                        content: {
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(.red)
-                                .frame(width: 33, height: 33)
-                                .overlay(
-                                    Circle()
-                                        .fill(.purple)
-                                        .overlay(Circle().stroke())
-                                        .padding(8)
-                                )
-                        },
-                        contentCluster: {
-                            Circle()
-                                .fill(.purple)
-                                .frame(width: 66, height: 66)
-                                .overlay(
-                                    Circle()
-                                        .stroke(lineWidth: 5)
-                                        .padding(2.5)
-                                )
-                        }
-                    )
-                },
+                annotationContent: annotationForLocation,
                 action: { place in
                     print(">>> selected:", place.name)
                 }
@@ -127,8 +147,8 @@ struct ClusteredAnnotationsView: View {
     }
 }
 
-struct ClusteredAnnotationsView_Previews: PreviewProvider {
+struct MultiAnnotationsViewView_Previews: PreviewProvider {
     static var previews: some View {
-        ClusteredAnnotationsView()
+        MultiAnnotationsView()
     }
 }

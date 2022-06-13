@@ -1,3 +1,4 @@
+import CoreLocation
 import CustomAnnotatedMap
 import SwiftUI
 
@@ -10,7 +11,12 @@ private class ViewModel: ObservableObject {
         init(id: UUID = UUID(), name: String, lat: Double, long: Double) {
             self.id = id
             self.name = name
-            self.location = Location(latitude: lat, longitude: long)
+            self.location = Location(
+                coordinate: .init(
+                    latitude: lat,
+                    longitude: long
+                )
+            )
         }
     }
 
@@ -19,6 +25,10 @@ private class ViewModel: ObservableObject {
         width: 100_000_000,
         height: 100_000_000
     )
+
+    let locationManager = CLLocationManager()
+    @Published var showsUserLocation: Bool = false
+    @Published var userTrackingMode: UserTrackingMode = .none
 
     let locations = [
         IdentifiablePlace(
@@ -69,13 +79,15 @@ private class ViewModel: ObservableObject {
     ]
 }
 
-struct AnnotationsView: View {
+struct UserLocationView: View {
     @StateObject private var viewModel: ViewModel = .init()
 
     var body: some View {
         VStack {
             CustomAnnotatedMap(
                 mapRect: $viewModel.mapRect,
+                showsUserLocation: viewModel.showsUserLocation,
+                userTrackingMode: $viewModel.userTrackingMode,
                 annotationItems: viewModel.locations,
                 annotationContent: { place in
                     MapAnnotation(location: place.location) {
@@ -91,6 +103,33 @@ struct AnnotationsView: View {
                     }
                 }
             )
+            .overlay(
+                HStack {
+                    Picker(
+                        "UserTrackingMode",
+                        selection: $viewModel.userTrackingMode
+                    ) {
+                        ForEach(UserTrackingMode.allCases, id: \.self) { mode in
+                            Text(mode.description)
+                                .tag(mode)
+                        }
+                    }.pickerStyle(.segmented)
+
+                    Button.init(
+                        action: { viewModel.showsUserLocation.toggle() },
+                        label: {
+                            if viewModel.showsUserLocation {
+                                Image(systemName: "location.fill")
+                            } else {
+                                Image(systemName: "location")
+                            }
+                        }
+                    )
+                    .buttonBorderShape(.capsule)
+                    .buttonStyle(.borderedProminent)
+                }.padding(),
+                alignment: .topTrailing
+            )
 
             Text(
                 """
@@ -103,11 +142,14 @@ struct AnnotationsView: View {
         }
         .navigationTitle("Annotations")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            viewModel.locationManager.requestWhenInUseAuthorization()
+        }
     }
 }
 
-struct AnnotationsView_Previews: PreviewProvider {
+struct UserLocationView_Previews: PreviewProvider {
     static var previews: some View {
-        AnnotationsView()
+        UserLocationView()
     }
 }

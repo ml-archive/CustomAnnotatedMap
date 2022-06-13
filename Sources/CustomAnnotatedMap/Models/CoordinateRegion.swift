@@ -29,6 +29,16 @@ public struct CoordinateRegion {
         self.rawValue = .init(center: center, span: span)
     }
 
+    public init(location: Location, latitudeDelta: Double, longitudeDelta: Double) {
+        self.rawValue = .init(
+            center: location.coordinate,
+            span: .init(
+                latitudeDelta: latitudeDelta,
+                longitudeDelta: longitudeDelta
+            )
+        )
+    }
+
     public init() {
         self.rawValue = .init()
     }

@@ -1,4 +1,3 @@
-import CoreLocation
 import SwiftUI
 
 /// A balloon-shaped annotation that marks a map location.
@@ -9,12 +8,12 @@ public struct MapMarker: MapAnnotationProtocol {
     public let mkAnnotation: _BaseMKAnnotation
 
     public init(
-        coordinate: CLLocationCoordinate2D,
+        location: Location,
         clusteringIdentifier: String? = nil,
         tint: Color? = nil
     ) {
         self.mkAnnotation = _BaseMKAnnotation.init(
-            coordinate: coordinate,
+            coordinate: location.coordinate,
             clusteringIdentifier: clusteringIdentifier,
             tint: tint
         )
