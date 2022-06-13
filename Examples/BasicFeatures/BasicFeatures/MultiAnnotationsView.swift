@@ -142,7 +142,7 @@ struct MultiAnnotationsView: View {
             .font(.footnote)
 
         }
-        .navigationTitle("Clustered Annotations")
+        .navigationTitle("Multi Annotations")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

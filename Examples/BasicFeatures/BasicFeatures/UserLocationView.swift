@@ -140,7 +140,7 @@ struct UserLocationView: View {
             .font(.footnote)
 
         }
-        .navigationTitle("Annotations")
+        .navigationTitle("User Location")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             viewModel.locationManager.requestWhenInUseAuthorization()

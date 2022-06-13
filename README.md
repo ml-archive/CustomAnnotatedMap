@@ -1,3 +1,3 @@
 # CustomMapView
 
-A description of this package.
+MapKit ViewRepresentable that allows clustering annotations on SwiftUI.
