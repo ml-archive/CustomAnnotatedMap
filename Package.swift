@@ -24,7 +24,7 @@ let package = Package(
         .target(
             name: "CustomAnnotatedMap",
             dependencies: [],
-            resources: [.copy("Resources")]
+            resources: [.copy("Resources/")]
         ),
         .testTarget(
             name: "CustomAnnotatedMapTests",
