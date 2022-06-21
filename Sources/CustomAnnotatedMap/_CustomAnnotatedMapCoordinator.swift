@@ -6,6 +6,11 @@ extension _CustomAnnotatedMapContent {
 
     public class _CustomAnnotatedMapCoordinator: NSObject, MKMapViewDelegate {
         private var mapContent: _CustomAnnotatedMapContent
+        /// Determines if changes in map region are updated to the mapContent view
+        var listenToLocationChanges = false
+        
+        /// The latest map region that got updated to the mapContent view
+        var lastMapRect: MapRect?
 
         init(_ mapContent: _CustomAnnotatedMapContent<ID, Annotation>) {
             self.mapContent = mapContent
@@ -16,8 +21,16 @@ extension _CustomAnnotatedMapContent {
             _ mapView: MKMapView,
             regionDidChangeAnimated animated: Bool
         ) {
+            /*
+              Only update the map region changes to the mapContent if allowed.
+              This prevents updates during the manual changes to the map region and user tracking mode
+              which are animated and would be interrupted.
+             */
+            guard listenToLocationChanges else { return }
+            
             self.mapContent.coordinateRegion = CoordinateRegion(rawValue: mapView.region)
             self.mapContent.mapRect = MapRect.init(rawValue: mapView.visibleMapRect)
+            self.lastMapRect = MapRect.init(rawValue: mapView.visibleMapRect)
         }
 
         public func mapView(
