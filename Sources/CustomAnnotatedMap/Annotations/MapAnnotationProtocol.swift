@@ -6,6 +6,7 @@ public protocol MapAnnotationProtocol {
     associatedtype Annotation = MKAnnotation
 
     associatedtype Content: View
+    associatedtype SelectedContent: View
     associatedtype ContentCluster: View
 
     var mkAnnotation: Annotation { get }

@@ -8,16 +8,19 @@ where
 {
     typealias CustomMKAnnotation = _CustomMKAnnotation<
         Annotation.Content,
+        Annotation.SelectedContent,
         Annotation.ContentCluster
     >
 
     typealias CustomAnnotationView = _CustomAnnotationView<
         Annotation.Content,
+        Annotation.SelectedContent,
         Annotation.ContentCluster
     >
 
     typealias CustomClusterAnnotationView = _CustomClusterAnnotationView<
         Annotation.Content,
+        Annotation.SelectedContent,
         Annotation.ContentCluster
     >
 
