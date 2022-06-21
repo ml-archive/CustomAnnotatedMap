@@ -61,18 +61,19 @@ extension MapRect: Hashable {
 }
 
 extension MapRect {
-    /// Compares two instances of MapRect with 0.0001 degrees precision (approx 10 metres)
+    /// Compares two instances of MapRect with a certain precision
     /// Precision is set due to slight inaccuracies in MKMap region property during map movements
     /// - Parameter mapRect: MapRect to compare
+    /// - Parameter precision: Comparison precision - 0.0001 degrees ~= 10 meters
     /// - Returns: The differences in centers and spans of the mapRects are smaller than 10 metres
-    func isSame(as mapRect: MapRect?) -> Bool {
+    func isSame(as mapRect: MapRect?, precision: CLLocationDegrees = 0.0001) -> Bool {
         guard let mapRect = mapRect else {
             return false
         }
         
-        return (abs(mapRect.coordinateRegion.center.latitude - self.coordinateRegion.center.latitude) < 0.0001) &&
-        (abs(mapRect.coordinateRegion.center.longitude - self.coordinateRegion.center.longitude) < 0.0001) &&
-        (abs(mapRect.coordinateRegion.span.latitudeDelta - self.coordinateRegion.span.latitudeDelta) < 0.0001) &&
-        (abs(mapRect.coordinateRegion.span.longitudeDelta - self.coordinateRegion.span.longitudeDelta) < 0.0001)
+        return (abs(mapRect.coordinateRegion.center.latitude - self.coordinateRegion.center.latitude) < precision) &&
+        (abs(mapRect.coordinateRegion.center.longitude - self.coordinateRegion.center.longitude) < precision) &&
+        (abs(mapRect.coordinateRegion.span.latitudeDelta - self.coordinateRegion.span.latitudeDelta) < precision) &&
+        (abs(mapRect.coordinateRegion.span.longitudeDelta - self.coordinateRegion.span.longitudeDelta) < precision)
     }
 }
