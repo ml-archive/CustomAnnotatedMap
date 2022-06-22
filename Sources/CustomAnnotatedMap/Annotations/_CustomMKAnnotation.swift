@@ -37,6 +37,9 @@ where
 {
     typealias CustomMKAnnotation = _CustomMKAnnotation<Content, SelectedContent, ContentCluster>
 
+    private var notSelectedView: UIView
+    private var selectedView: UIView
+
     init(annotation: MKAnnotation) {
         guard let customMKAnnotation = annotation as? CustomMKAnnotation else {
             fatalError(
@@ -46,17 +49,29 @@ where
                 """
             )
         }
+        self.notSelectedView = UIHostingController(rootView: customMKAnnotation.content.ignoresSafeArea()).view
+        self.selectedView = UIHostingController(rootView: customMKAnnotation.selectedContent.ignoresSafeArea()).view
         super.init(
             annotation: customMKAnnotation,
             reuseIdentifier: "customAnnotationViewReuseIdentifier"
         )
         self.clusteringIdentifier = customMKAnnotation.clusteringIdentifier
-        self.addSubview(
-            UIHostingController(rootView: customMKAnnotation.content.ignoresSafeArea()).view)
+        self.addSubview(notSelectedView)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        // Toogles the selection views 
+        if selected {
+            self.addSubview(selectedView)
+            notSelectedView.removeFromSuperview()
+        } else {
+            self.addSubview(notSelectedView)
+            selectedView.removeFromSuperview()
+        }
     }
 }
 
