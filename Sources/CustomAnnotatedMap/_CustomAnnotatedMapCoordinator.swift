@@ -71,7 +71,9 @@ extension _CustomAnnotatedMapContent {
             animated: Bool
         ) {
             if let userTrackingMode = UserTrackingMode(rawValue: mode.rawValue) {
-                self.mapContent.userTrackingMode = userTrackingMode
+                DispatchQueue.main.async {                
+                    self.mapContent.userTrackingMode = userTrackingMode
+                }
             }
         }
     }

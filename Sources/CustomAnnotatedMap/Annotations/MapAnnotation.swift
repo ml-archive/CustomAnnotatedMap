@@ -20,6 +20,7 @@ where
         self.mkAnnotation = _CustomMKAnnotation.init(
             coordinate: location.coordinate,
             clusteringIdentifier: clusteringIdentifier,
+            anchorPoint: anchorPoint,
             content: content(),
             selectedContent: selectedContent(),
             contentCluster: contentCluster()
@@ -42,6 +43,7 @@ where
     ) {
         self.mkAnnotation = _CustomMKAnnotation.init(
             coordinate: location.coordinate,
+            anchorPoint: anchorPoint,
             content: content(),
             selectedContent: selectedContent()
         )
