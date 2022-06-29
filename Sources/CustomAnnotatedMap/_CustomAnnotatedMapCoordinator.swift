@@ -11,6 +11,9 @@ extension _CustomAnnotatedMapContent {
         
         /// The latest map region that got updated to the mapContent view
         var lastMapRect: MapRect?
+        
+        /// The IDs of the annotations currently displayed in the mapContent view
+        var displayedAnnotationsIDs: Set<ID> = []
 
         init(_ mapContent: _CustomAnnotatedMapContent<ID, Annotation>) {
             self.mapContent = mapContent
