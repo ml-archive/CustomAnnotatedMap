@@ -8,16 +8,19 @@ where
 {
     typealias CustomMKAnnotation = _CustomMKAnnotation<
         Annotation.Content,
+        Annotation.SelectedContent,
         Annotation.ContentCluster
     >
 
     typealias CustomAnnotationView = _CustomAnnotationView<
         Annotation.Content,
+        Annotation.SelectedContent,
         Annotation.ContentCluster
     >
 
     typealias CustomClusterAnnotationView = _CustomClusterAnnotationView<
         Annotation.Content,
+        Annotation.SelectedContent,
         Annotation.ContentCluster
     >
 
@@ -79,11 +82,10 @@ where
 
     public func makeUIView(context: Context) -> some MKMapView {
         let mapView = MKMapView(frame: .zero)
-        mapView.addAnnotations(
-            annotations
-                .mapValues(\.mkAnnotation)
-                .compactMap { $0.value as? MKAnnotation }
-        )
+        
+        updateAnnotationsIfNeeded(on: mapView,
+                                  with: context.coordinator)
+        
         mapView.register(
             CustomAnnotationView.self,
             forAnnotationViewWithReuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier
@@ -98,10 +100,14 @@ where
     }
 
     public func updateUIView(_ mapView: UIViewType, context: Context) {
+        
         if mapView.delegate == nil {
             mapView.delegate = context.coordinator
         }
-
+        
+        updateAnnotationsIfNeeded(on: mapView,
+                                  with: context.coordinator)
+        
         if mapView.showsUserLocation != self.showsUserLocation {
             mapView.showsUserLocation = self.showsUserLocation
         }
@@ -128,6 +134,26 @@ where
         }
     }
     
+    
+    /// Checks if the current annotations reflect the annotations displayed in the map and updates accordingly
+    /// - Parameters:
+    ///   - mapView: The MKMapView associated with this UIViewRepresentable
+    ///   - coordinator: The associated coordinator object
+    private func updateAnnotationsIfNeeded(on mapView: MKMapView, with coordinator: Coordinator) {
+        let annotationsIds = Set(annotations.map { $0.key})
+        
+        if coordinator.displayedAnnotationsIDs != annotationsIds {
+            mapView.removeAnnotations(mapView.annotations)
+            
+            mapView.addAnnotations(
+                annotations
+                    .mapValues(\.mkAnnotation)
+                    .compactMap { $0.value as? MKAnnotation }
+            )
+            
+            coordinator.displayedAnnotationsIDs = annotationsIds
+        }
+    }
     
     /// Moves the map to a coordinate region
     /// - Parameters:

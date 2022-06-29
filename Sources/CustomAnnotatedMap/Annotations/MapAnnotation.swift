@@ -1,11 +1,12 @@
 import SwiftUI
 
-public struct MapAnnotation<Content, ContentCluster>: MapAnnotationProtocol
+public struct MapAnnotation<Content, SelectedContent, ContentCluster>: MapAnnotationProtocol
 where
     Content: View,
+    SelectedContent: View,
     ContentCluster: View
 {
-    public let mkAnnotation: _CustomMKAnnotation<Content, ContentCluster>
+    public let mkAnnotation: _CustomMKAnnotation<Content, SelectedContent, ContentCluster>
 
     /// A customizable annotation that can cluster together that marks a map location
     public init(
@@ -13,12 +14,14 @@ where
         clusteringIdentifier: String,
         anchorPoint: CGPoint = .init(x: 0.5, y: 0.5),
         @ViewBuilder content: () -> Content,
+        @ViewBuilder selectedContent: () ->	SelectedContent,
         @ViewBuilder contentCluster: () -> ContentCluster
     ) {
         self.mkAnnotation = _CustomMKAnnotation.init(
             coordinate: location.coordinate,
             clusteringIdentifier: clusteringIdentifier,
             content: content(),
+            selectedContent: selectedContent(),
             contentCluster: contentCluster()
         )
     }
@@ -27,17 +30,20 @@ where
 extension MapAnnotation
 where
     Content: View,
+    SelectedContent: View,
     ContentCluster == Never
 {
     /// A customizable single annotation hat marks a map location
     public init(
         location: Location,
         anchorPoint: CGPoint = .init(x: 0.5, y: 0.5),
-        @ViewBuilder content: () -> Content
+        @ViewBuilder content: () -> Content,
+        @ViewBuilder selectedContent: () -> SelectedContent
     ) {
         self.mkAnnotation = _CustomMKAnnotation.init(
             coordinate: location.coordinate,
-            content: content()
+            content: content(),
+            selectedContent: selectedContent()
         )
     }
 }
