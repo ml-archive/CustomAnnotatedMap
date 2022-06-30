@@ -9,15 +9,18 @@ public class _CustomMKAnnotation<Content, SelectedContent, ContentCluster>: NSOb
     let clusteringIdentifier: String?
     let content: Content
     let selectedContent: SelectedContent?
-    let contentCluster: ContentCluster?
+    let contentCluster: ((Int) -> ContentCluster)?
+    let anchorPoint: CGPoint
 
     init(
         coordinate: CLLocationCoordinate2D,
         clusteringIdentifier: String? = nil,
+        anchorPoint: CGPoint,
         content: Content,
         selectedContent: SelectedContent,
-        contentCluster: ContentCluster? = nil
-    ) {
+        contentCluster: ((Int) -> ContentCluster)? = nil
+    ){
+        self.anchorPoint = anchorPoint
         self.coordinate = coordinate
         self.clusteringIdentifier = clusteringIdentifier
         self.content = content
@@ -51,26 +54,36 @@ where
         }
         self.notSelectedView = UIHostingController(rootView: customMKAnnotation.content.ignoresSafeArea()).view
         self.selectedView = UIHostingController(rootView: customMKAnnotation.selectedContent.ignoresSafeArea()).view
+        notSelectedView.backgroundColor = .clear
+        selectedView.backgroundColor = .clear
+        
         super.init(
             annotation: customMKAnnotation,
             reuseIdentifier: "customAnnotationViewReuseIdentifier"
         )
+        
         self.clusteringIdentifier = customMKAnnotation.clusteringIdentifier
-        self.addSubview(notSelectedView)
+        frame = CGRect(x: 0, y: 0, width: 30, height: 40)
+
+        centerOffset = CGPoint(x: 0, y: -frame.size.height)
+        addSubview(notSelectedView)
+        notSelectedView.frame = bounds
     }
+    
+    
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
-        // Toogles the selection views 
+        // Toogles the selection views
         if selected {
-            self.addSubview(selectedView)
-            notSelectedView.removeFromSuperview()
+            addSubview(selectedView)
+            selectedView.frame = bounds
         } else {
-            self.addSubview(notSelectedView)
-            selectedView.removeFromSuperview()
+            addSubview(notSelectedView)
+            notSelectedView.frame = bounds
         }
     }
 }
@@ -102,7 +115,8 @@ where
             annotation: cluster,
             reuseIdentifier: "customClusterAnnotationViewReuseIdentifier"
         )
-        self.addSubview(UIHostingController(rootView: contentCluster.ignoresSafeArea()).view)
+        
+        self.addSubview(UIHostingController(rootView: contentCluster(members.count).ignoresSafeArea()).view)
     }
 
     required init?(coder aDecoder: NSCoder) {
