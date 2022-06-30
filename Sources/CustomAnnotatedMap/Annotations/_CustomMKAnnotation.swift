@@ -9,7 +9,7 @@ public class _CustomMKAnnotation<Content, SelectedContent, ContentCluster>: NSOb
     let clusteringIdentifier: String?
     let content: Content
     let selectedContent: SelectedContent?
-    let contentCluster: ContentCluster?
+    let contentCluster: ((Int) -> ContentCluster)?
     let anchorPoint: CGPoint
 
     init(
@@ -18,8 +18,8 @@ public class _CustomMKAnnotation<Content, SelectedContent, ContentCluster>: NSOb
         anchorPoint: CGPoint,
         content: Content,
         selectedContent: SelectedContent,
-        contentCluster: ContentCluster? = nil
-    ) {
+        contentCluster: ((Int) -> ContentCluster)? = nil
+    ){
         self.anchorPoint = anchorPoint
         self.coordinate = coordinate
         self.clusteringIdentifier = clusteringIdentifier
@@ -115,7 +115,8 @@ where
             annotation: cluster,
             reuseIdentifier: "customClusterAnnotationViewReuseIdentifier"
         )
-        self.addSubview(UIHostingController(rootView: contentCluster.ignoresSafeArea()).view)
+        
+        self.addSubview(UIHostingController(rootView: contentCluster(members.count).ignoresSafeArea()).view)
     }
 
     required init?(coder aDecoder: NSCoder) {

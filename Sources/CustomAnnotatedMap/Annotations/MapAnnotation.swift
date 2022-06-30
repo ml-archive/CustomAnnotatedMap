@@ -15,7 +15,7 @@ where
         anchorPoint: CGPoint = .init(x: 0.5, y: 0.5),
         @ViewBuilder content: () -> Content,
         @ViewBuilder selectedContent: () ->	SelectedContent,
-        @ViewBuilder contentCluster: () -> ContentCluster
+        @ViewBuilder contentCluster: @escaping ((Int) -> ContentCluster)
     ) {
         self.mkAnnotation = _CustomMKAnnotation.init(
             coordinate: location.coordinate,
@@ -23,7 +23,7 @@ where
             anchorPoint: anchorPoint,
             content: content(),
             selectedContent: selectedContent(),
-            contentCluster: contentCluster()
+            contentCluster: contentCluster
         )
     }
 }
