@@ -108,17 +108,8 @@ where
         updateAnnotationsIfNeeded(on: mapView,
                                   with: context.coordinator)
         
-        if mapView.showsUserLocation != self.showsUserLocation {
-            mapView.showsUserLocation = self.showsUserLocation
-        }
-
-        if let userTrackingMode = MKUserTrackingMode(rawValue: self.userTrackingMode.rawValue),
-            mapView.userTrackingMode != userTrackingMode
-        {
-            performWithoutLocationUpdates(on: context.coordinator) {
-                mapView.setUserTrackingMode(userTrackingMode, animated: true)
-            }
-        }
+        updateUserTrackingMode(on: mapView,
+                               with: context.coordinator)
 
         // Update the map region either using the coordinateRegion or MapRect
         if let coordinateRegion = self.coordinateRegion {
@@ -131,6 +122,24 @@ where
                           with: context.coordinator)
         } else {
             fatalError("Either mapRect or coordinateRegion should be set")
+        }
+    }
+    
+    /// Updates the user tracking mode when it is different than the currently set mode
+    /// - Parameters:
+    ///   - mapView: The MKMapView associated with this UIViewRepresentable
+    ///   - coordinator:  The associated coordinator object
+    private func updateUserTrackingMode(on mapView: MKMapView, with coordinator: Coordinator) {
+        DispatchQueue.main.async {
+            if mapView.showsUserLocation != self.showsUserLocation {
+                mapView.showsUserLocation = self.showsUserLocation
+            }
+            
+            if let userTrackingMode = MKUserTrackingMode(rawValue: self.userTrackingMode.rawValue),
+               mapView.userTrackingMode != userTrackingMode
+            {
+                mapView.setUserTrackingMode(userTrackingMode, animated: true)
+            }
         }
     }
     
@@ -163,25 +172,27 @@ where
     private func updateRegion(_ coordinateRegion: CoordinateRegion, on mapView: UIViewType, with coordinator: Coordinator) {
             // Prevents repetitive calls to MKMapView.setRegion when other parts of the view are updated that are not
             // related to the map region
-            guard !coordinateRegion.mapRect.isSame(as: coordinator.lastMapRect) else {
+        DispatchQueue.main.async {
+            guard !coordinateRegion.mapRect.isSame(as: coordinator.lastMapRect),
+                  !coordinator.regionIsChanging
+            else {
                 return
             }
-            
-            performWithoutLocationUpdates(on: coordinator) {
-                mapView.setRegion(coordinateRegion.rawValue, animated: true)
-            }
+
+            mapView.setRegion(coordinateRegion.rawValue, animated: true)
+        }
     }
     
     /// Pauses the location updates on the coordinator while performing a task
     /// - Parameters:
     ///   - coordinator: The associated Coordinator object
     ///   - task: The task to be performed
-    private func performWithoutLocationUpdates(on coordinator: _CustomAnnotatedMapCoordinator, task: () -> Void) {
-        defer {
-            coordinator.listenToLocationChanges = true
-        }
-        
-        coordinator.listenToLocationChanges = false
-        task()
-    }
+//    private func performWithoutLocationUpdates(on coordinator: _CustomAnnotatedMapCoordinator, task: () -> Void) {
+//        defer {
+//            coordinator.listenToLocationChanges = true
+//        }
+//
+//        coordinator.listenToLocationChanges = false
+//        task()
+//    }
 }
