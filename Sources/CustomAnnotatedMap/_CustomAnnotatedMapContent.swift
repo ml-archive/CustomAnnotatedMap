@@ -169,16 +169,15 @@ where
     ///   - coordinateRegion: The region the map will be moved to
     ///   - mapView: The MKMapView associated with this UIViewRepresentable
     ///   - coordinator: The associated coordinator object
-    private func updateRegion(_ coordinateRegion: CoordinateRegion, on mapView: UIViewType, with coordinator: Coordinator) {
-            // Prevents repetitive calls to MKMapView.setRegion when other parts of the view are updated that are not
-            // related to the map region
+    private func updateRegion(_ coordinateRegion: CoordinateRegion,
+                              on mapView: UIViewType,
+                              with coordinator: Coordinator) {
         DispatchQueue.main.async {
-            guard !coordinateRegion.mapRect.isSame(as: coordinator.lastMapRect),
+            guard !coordinateRegion.rawValue.equals(to: mapView.region),
                   !coordinator.regionIsChanging
             else {
                 return
             }
-
             mapView.setRegion(coordinateRegion.rawValue, animated: true)
         }
     }

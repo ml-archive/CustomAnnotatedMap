@@ -9,9 +9,6 @@ extension _CustomAnnotatedMapContent {
         /// Determines if the map region is currently being changed with animation (the map is sliding to a new region)
         var regionIsChanging = false
         
-        /// The latest map region that got updated to the mapContent view
-        var lastMapRect: MapRect?
-        
         /// The IDs of the annotations currently displayed in the mapContent view
         var displayedAnnotationsIDs: Set<ID> = []
 
@@ -20,11 +17,10 @@ extension _CustomAnnotatedMapContent {
             super.init()
         }
         
-        /// This delegate method gets called multiple times during the animation of the region change
+        /// Called multiple times when the map region change animation is taking place
         public func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
             self.mapContent.coordinateRegion = CoordinateRegion(rawValue: mapView.region)
             self.mapContent.mapRect = MapRect.init(rawValue: mapView.visibleMapRect)
-            self.lastMapRect = MapRect.init(rawValue: mapView.visibleMapRect)
         }
         
         /// The map view is about to change the visible map region
