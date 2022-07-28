@@ -182,17 +182,4 @@ where
             mapView.setRegion(coordinateRegion.rawValue, animated: true)
         }
     }
-    
-    /// Pauses the location updates on the coordinator while performing a task
-    /// - Parameters:
-    ///   - coordinator: The associated Coordinator object
-    ///   - task: The task to be performed
-//    private func performWithoutLocationUpdates(on coordinator: _CustomAnnotatedMapCoordinator, task: () -> Void) {
-//        defer {
-//            coordinator.listenToLocationChanges = true
-//        }
-//
-//        coordinator.listenToLocationChanges = false
-//        task()
-//    }
 }
